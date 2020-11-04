@@ -141,6 +141,20 @@ void terminal_write_string (const char *data) {
   terminal_write (data, strlen (data));
 }
 
+void ascii_art () {
+  size_t width = 20, height = 8;
+  size_t start_x = 20, start_y = 4;
+
+  for (size_t y = start_y; y < start_y + height; y++) {
+    for (size_t x = start_x; x < start_x + width; x++) {
+      terminal_put_entry_at (' ', vga_entry_color (VGA_COLOR_BLACK, VGA_COLOR_MAGENTA), x, y);
+      terminal_put_entry_at (' ', vga_entry_color (VGA_COLOR_BLACK, VGA_COLOR_CYAN), x + width, y);
+      terminal_put_entry_at (' ', vga_entry_color (VGA_COLOR_BLACK, VGA_COLOR_LIGHT_BROWN), x, y + height);
+      terminal_put_entry_at (' ', vga_entry_color (VGA_COLOR_BLACK, VGA_COLOR_GREEN), x + width, y + height);
+    }
+  }
+}
+
 void kernel_main () {
   /* Initialize terminal interface */
   terminal_initialize ();
@@ -151,4 +165,5 @@ void kernel_main () {
     terminal_write_string (text);
   }
   terminal_write_string ("End");
+  ascii_art ();
 }
