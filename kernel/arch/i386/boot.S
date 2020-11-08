@@ -28,7 +28,7 @@ _start:
     /* The bootloader has loaded us into 32-bit protected mode */
   
     /* We set the esp register to point to the top of the stack */
-    mov $stack_top, %esp
+    movl $stack_top, %esp
   
     /*
     This is a good place to initialize crucial processor state before the
@@ -51,7 +51,7 @@ _start:
     cli
 1:	
     hlt
-	  jmp 1b
+	jmp 1b
  
 /*
 Set the size of the _start symbol to the current location '.' minus its start.

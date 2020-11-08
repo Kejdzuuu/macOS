@@ -5,5 +5,5 @@
 
 .section .fini
   /* gcc will put crtend.o .fini section here */
-  poplp %ebp
+  popl %ebp
   ret

@@ -4,5 +4,5 @@
 void kernel_main (void) {
   char os_name[] = "macOS";
   terminal_initialize ();
-  printf ("Hello to %s\n");
+  printf ("Hello to %s\n", os_name);
 }
