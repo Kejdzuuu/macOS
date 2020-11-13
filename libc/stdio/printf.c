@@ -5,6 +5,8 @@
 #include <string.h>
 
 #define STRING_LEN 36
+#define DECIMAL_BASE 10
+#define HEX_BASE 16
 
 static bool print (const char *data, size_t len) {
   for (size_t i = 0; i < len; i++) {
@@ -131,12 +133,8 @@ int printf (const char *format, ...) {
       format++;
       int num = va_arg (parameters, int);
       char str[STRING_LEN];
-      itoa (num, str, 10);
+      itoa (num, str, DECIMAL_BASE);
       size_t len = strlen (str);
-      /*size_t len = get_num_of_digits (num);
-      if (num < 0) {
-        len++;
-      } */
       if (max_chars_remaining < len) {
         // Char counter overflow
         // TODO: Set errno to EOVERFLOW
@@ -145,7 +143,21 @@ int printf (const char *format, ...) {
       if (!print (str, len)) {
         return -1;
       }
-      //print_num ((int)len);
+      chars_written += len;
+    } else if (format[0] == 'x') {
+      format++;
+      int num = va_arg (parameters, int);
+      char str[STRING_LEN];
+      itoa (num, str, HEX_BASE);
+      size_t len = strlen (str);
+      if (max_chars_remaining < len) {
+        // Char counter overflow
+        // TODO: Set errno to EOVERFLOW
+        return -1;
+      }
+      if (!print (str, len)) {
+        return -1;
+      }
       chars_written += len;
     } else {
       size_t len = 1;

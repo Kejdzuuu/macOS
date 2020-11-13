@@ -1,3 +1,4 @@
+/*.intel_syntax noprefix */
 /* Multiboot header constants */
 .set ALIGN,     1<<0                /* align loaded modules on page boundries */
 .set MEMINFO,   1<<1                /* memory map */
@@ -52,7 +53,23 @@ _start:
 1:	
     hlt
 	jmp 1b
- 
+
+
+/* Set up GDT */
+.global gdt_flush
+.extern gdt_ptr
+gdt_flush:
+  lgdt  (gdt_ptr)
+  jmp   $0x08,$seg_reg_flush  /* load code GDT entry to cs register */
+seg_reg_flush:
+  mov   $0x10,  %ax           /* load data GDT entry to registers */
+  mov %ax, %ds        
+    mov %ax, %es
+    mov %ax, %gs
+    mov %ax, %fs
+    mov %ax, %ss
+  ret
+
 /*
 Set the size of the _start symbol to the current location '.' minus its start.
 This is useful when debugging or when you implement call tracing.
