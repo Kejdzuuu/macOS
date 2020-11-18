@@ -9,5 +9,5 @@ void kernel_main (void) {
   printf ("Welcome to %s\n", os_name);
   printf ("GDT:\n");
   ascii_art ();
-  //gdt_setup();
+  gdt_setup();
 }

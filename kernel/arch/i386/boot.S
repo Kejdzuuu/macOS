@@ -59,8 +59,8 @@ _start:
 .global gdt_flush
 .extern gdt_ptr
 gdt_flush:
-  lgdt  (gdt_ptr)
-  jmp   $0x08,$seg_reg_flush  /* load code GDT entry to cs register */
+  lgdt  gdt_ptr
+  ljmpl   $0x08,$seg_reg_flush  /* load code GDT entry to cs register */
 seg_reg_flush:
   mov   $0x10,  %ax           /* load data GDT entry to registers */
   mov %ax, %ds        
