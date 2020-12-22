@@ -60,14 +60,33 @@ _start:
 .extern gdt_ptr
 gdt_flush:
   lgdt  gdt_ptr
-  ljmpl   $0x08,$seg_reg_flush  /* load code GDT entry to cs register */
+  ljmpl $0x08,$seg_reg_flush  /* load code GDT entry to cs register */
 seg_reg_flush:
-  mov   $0x10,  %ax           /* load data GDT entry to registers */
+  mov $0x10,  %ax           /* load data GDT entry to registers */
   mov %ax, %ds        
-    mov %ax, %es
-    mov %ax, %gs
-    mov %ax, %fs
-    mov %ax, %ss
+  mov %ax, %es
+  mov %ax, %gs
+  mov %ax, %fs
+  mov %ax, %ss
+  ret
+
+/* Load page directory */
+.global load_page_directory
+load_page_directory:
+  push  %ebp
+  mov   %esp, %ebp
+  mov   8(%esp), %eax
+  mov   %eax, %cr3
+  mov   %ebp, %esp
+  pop   %ebp
+  ret
+
+/* Enable paging */
+.global paging_start
+paging_start:
+  mov %cr0, %eax
+  or  $0x80000000, %eax
+  mov %eax, %cr0
   ret
 
 /*
